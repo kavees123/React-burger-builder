@@ -3,7 +3,8 @@ import {updateObject} from '../ulity';
 const initalState = {
     ingredients: null,
     totalPrice: 4,
-    error: false
+    error: false,
+    building: false
     
 };
 
@@ -20,14 +21,17 @@ const reducer = ( state= initalState, action) => {
             const updatedIngredient= { [action.ingredientName] : state.ingredients[action.ingredientName] + 1};
             const updatedIngredients = updateObject(state.ingredients, updatedIngredient);
             const updatedState = {ingredients: updatedIngredients,
-                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName]};
+                totalPrice: state.totalPrice + INGREDIENT_PRICES[action.ingredientName],
+                building: true
+            };
             return updateObject(state,updatedState);
         case actionTypes.DELETE_INGREDIENTS:
             return{
                 ...state,
                 ingredients: {
                     ...state.ingredients,
-                    [action.ingredientName] : state.ingredients[action.ingredientName] - 1
+                    [action.ingredientName] : state.ingredients[action.ingredientName] - 1,
+                    building: true
                 },
                 totalPrice: state.totalPrice - INGREDIENT_PRICES[action.ingredientName]
             };
@@ -36,7 +40,8 @@ const reducer = ( state= initalState, action) => {
                 ...state,
                 ingredients: action.ingredients,
                 totalPrice:4,
-                error:false
+                error:false,
+                building: false
                     
             };
         case actionTypes.FETCH_INGREDIENTS_FAILED:
